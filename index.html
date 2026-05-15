@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SSEMWOGERERE ASHIRAF - Academic Grade Tracker | BA(EDUC)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Poppins', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e9eff7 0%, #dce3ec 100%);
+            padding: 25px 20px 60px;
+        }
+
+        /* MAIN CONTAINER */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* PROFILE CARD (with hover photo circle) */
+        .profile-card {
+            background: white;
+            border-radius: 40px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* PHOTO CIRCLE WITH HOVER EFFECTS */
+        .photo-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+            background-image: url('https://ui-avatars.com/api/?background=1e3c72&color=fff&rounded=true&size=100&bold=true&name=SSEMWOGERERE+ASHIRAF');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .photo-circle:hover {
+            transform: scale(1.08) rotate(2deg);
+            box-shadow: 0 15px 28px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.02) contrast(1.05);
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .student-details h2 {
+            font-size: 1.8rem;
+            color: #0a2b44;
+            letter-spacing: -0.3px;
+        }
+
+        .student-details p {
+            color: #2c5270;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .reg-badge {
+            background: #eef2ff;
+            padding: 8px 18px;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #1e40af;
+            border-left: 4px solid #2563eb;
+        }
+
+        /* semester navigation tabs */
+        .semester-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 60px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .sem-tab {
+            background: #f1f5f9;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1e293b;
+        }
+
+        .sem-tab.active {
+            background: #1e3c72;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .sem-tab:hover:not(.active) {
+            background: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        /* GPA cards */
+        .gpa-panel {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .gpa-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 22px;
+            flex: 1;
+            min-width: 160px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border-bottom: 5px solid #2563eb;
+        }
+
+        .gpa-card h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #475569;
+        }
+
+        .gpa-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .gpa-card small {
+            font-size: 0.75rem;
+            color: #3b82f6;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #0f2b4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn.secondary {
+            background: #f1f5f9;
+            color: #1e3c72;
+            border: 2px solid #1e3c72;
+        }
+
+        .btn.secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn.danger {
+            background: #ef4444;
+        }
+
+        .btn.danger:hover {
+            background: #dc2626;
+        }
+
+        /* COURSE TABLE */
+        .courses-section {
+            background: white;
+            border-radius: 32px;
+            padding: 20px 18px;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 8px;
+            background: #f8fafc;
+            color: #1e293b;
+            font-weight: 700;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        .course-code {
+            font-weight: 600;
+            color: #0c4a6e;
+        }
+
+        input {
+            width: 85px;
+            padding: 8px 6px;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            text-align: center;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+        }
+
+        .total-col {
+            font-weight: 700;
+            background: #f1f5f9;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .grade-point {
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .save-status {
+            text-align: right;
+            font-size: 0.75rem;
+            margin-top: 12px;
+            color: #2d6a4f;
+            font-weight: 500;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #0a2b44;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            color: #475569;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .stat-box h5 {
+            font-size: 0.8rem;
+            color: #475569;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .stat-box .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #334155;
+            font-size: 0.8rem;
+        }
+
+        .print-view {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .print-view {
+                display: block;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- PROFILE SECTION with hover circle -->
+    <div class="profile-card">
+        <div class="profile-left">
+            <div class="photo-circle" title="SSEMWOGERERE ASHIRAF"></div>
+            <div class="student-details">
+                <h2>SSEMWOGERERE ASHIRAF</h2>
+                <p>🎓 BA(EDUC) - Bachelor of Arts with Education | Year 2 (Current)</p>
+                <p>📌 Registration: <strong>2024-B201-11819</strong> | 📧 Private Sponsorship | Nkozi Campus</p>
+            </div>
+        </div>
+        <div class="reg-badge">
+            🟢 ACTIVE | AC YEAR 2025/2026
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons no-print">
+        <button class="btn" id="exportPdfBtn">📥 Export to PDF</button>
+        <button class="btn secondary" id="emailBtn">📧 Email Transcript</button>
+        <button class="btn secondary" id="importBtn">📤 Import Data</button>
+        <button class="btn secondary" id="backupBtn">💾 Backup</button>
+        <button class="btn danger" id="clearAllBtn">🗑️ Clear All Data</button>
+    </div>
+
+    <!-- SEMESTER TABS (3 years: 6 semesters) -->
+    <div class="semester-nav" id="semesterTabs"></div>
+
+    <!-- GPA Summary Cards -->
+    <div class="gpa-panel">
+        <div class="gpa-card"><h4>📖 Current Semester GPA</h4><div class="value" id="currentSemGPA">0.00</div><small>weighted by credits</small></div>
+        <div class="gpa-card"><h4>🏆 Overall CGPA</h4><div class="value" id="overallCGPA">0.00</div><small>all semesters (3 years)</small></div>
+        <div class="gpa-card"><h4>📊 Total Credits Attempted</h4><div class="value" id="totalCredits">0</div><small>incl. all registered courses</small></div>
+        <div class="gpa-card"><h4>⭐ Current Sem Credits</h4><div class="value" id="currentCredits">0</div><small>this semester only</small></div>
+    </div>
+
+    <!-- COURSE TABLE (dynamic per semester) -->
+    <div class="courses-section">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 15px;">
+            <h3 id="semesterTitle" style="color:#0f3b5f;">📚 Year 2, Semester 2 (Current)</h3>
+            <button class="btn danger" id="resetSemesterBtn" style="padding: 8px 14px; font-size: 0.8rem;">⟳ Reset Marks</button>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="gradesTable">
+                <thead>
+                    <tr><th>Course Code</th><th>Course Name</th><th>Credits</th><th>Coursework (max 50)</th><th>Final Exam (max 50)</th><th>Total /100</th><th>Grade Point (weighted)</th></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        <div class="save-status" id="saveMsg">✓ Auto-saved to browser storage</div>
+    </div>
+
+    <!-- TRANSCRIPT VIEW -->
+    <div class="print-view" id="printView"></div>
+
+    <footer>📌 Coursework (50) + Final Exam (50) = 100% | GPA = Σ(gradePoints)/Σ(credits) where gradePoint = (total/10)*credits | CGPA across 3 years (6 semesters) | Deployed via GitHub Pages</footer>
+</div>
+
+<!-- Modals -->
+<div class="modal" id="emailModal">
+    <div class="modal-content">
+        <h3>📧 Email Academic Transcript</h3>
+        <p>Email address:</p>
+        <input type="email" id="emailInput" placeholder="your@email.com" style="width: 100%; margin-bottom: 15px;">
+        <p style="font-size: 0.85rem; color: #94a3b8;">Your transcript will be sent immediately with your current grades and GPA.</p>
+        <div class="modal-buttons">
+            <button class="btn secondary" onclick="closeModal('emailModal')">Cancel</button>
+            <button class="btn" onclick="sendEmail()">Send Email</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="importModal">
+    <div class="modal-content">
+        <h3>📤 Import Grades from JSON</h3>
+        <p>Paste your exported JSON data:</p>
+        <textarea id="importText" style="width: 100%; height: 200px; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: monospace; font-size: 0.85rem; margin-bottom: 15px;"></textarea>
+        <div class="modal-buttons">
+            <button class="btn secondary" onclick="closeModal('importModal')">Cancel</button>
+            <button class="btn" onclick="importData()">Import Data</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmModal">
+    <div class="modal-content">
+        <h3 id="confirmTitle">Confirm Action</h3>
+        <p id="confirmMessage"></p>
+        <div class="modal-buttons">
+            <button class="btn secondary" onclick="closeModal('confirmModal')">Cancel</button>
+            <button class="btn danger" id="confirmBtn" onclick="">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script src="tracker.js"></script>
+</body>
+</html>
