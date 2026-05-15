@@ -1,0 +1,46 @@
+{
+  "name": "academic-grade-tracker",
+  "version": "1.0.0",
+  "description": "🎓 Academic Grade Tracker for BA(EDUC) Students - Multi-semester GPA calculator with export & backup features",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html",
+    "test": "echo \"Testing complete\""
+  },
+  "keywords": [
+    "academic",
+    "grade-tracker",
+    "GPA",
+    "CGPA",
+    "education",
+    "student",
+    "calculator",
+    "ba-educ"
+  ],
+  "author": "SSEMWOGERERE ASHIRAF",
+  "email": "ssemwogerere.ashiraf@stud.umu.ac.ug",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ssemwogerere-Ashiraf/academic-grade-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ssemwogerere-Ashiraf/academic-grade-tracker/issues"
+  },
+  "homepage": "https://Ssemwogerere-Ashiraf.github.io/academic-grade-tracker",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Ssemwogerere-Ashiraf"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "student": {
+    "name": "SSEMWOGERERE ASHIRAF",
+    "registration": "2024-B201-11819",
+    "program": "BA(EDUC)",
+    "campus": "Nkozi Campus",
+    "year": 2,
+    "semester": 2
+  }
+}
