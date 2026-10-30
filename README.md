@@ -13,6 +13,7 @@ A modern, responsive **academic grade tracker** designed for BA(EDUC) students a
 - ✅ **Real-Time GPA Calculation** - Automatic GPA & CGPA computation
 - ✅ **Credit-Weighted Grades** - Accurate grade point calculations
 - ✅ **12 Pre-Loaded Courses** - Year 2 Semester 2 units ready to use
+- ✅ **Course Unit Management** - Add, edit, or delete units and credit values in any semester
 - ✅ **Auto-Save** - Grades saved to browser storage automatically
 
 ### 🔄 Data Management
@@ -60,11 +61,13 @@ start index.html     # Windows
 
 ### Grade Entry
 1. Select a semester from the tabs
-2. Enter **Coursework** marks (0-50)
-3. Enter **Final Exam** marks (0-50)
-4. **Total** automatically calculates (0-100)
-5. **Grade Points** computed based on credits
-6. Grades **auto-save** to browser storage
+2. Use **Add Unit** to create a course unit with its code, name, and credit units
+3. Use **Edit** or **Delete** beside an existing unit to manage it
+4. Enter **Coursework** marks (0-50)
+5. Enter **Final Exam** marks (0-50)
+6. **Total** automatically calculates (0-100)
+7. **Grade Points** computed based on credits
+8. Grades and course changes **auto-save** to browser storage
 
 ### GPA Calculation Formula
 ```
@@ -195,14 +198,16 @@ Find and update:
 <strong>2024-B201-11819</strong>
 ```
 
-### Add/Remove Courses
-Edit `tracker.js` in the `year2Sem2Courses` array:
+### Default Courses
+The built-in starting courses are defined in `tracker.js` in the `year2Sem2Courses` array:
 ```javascript
 const year2Sem2Courses = [
     { code: "NEW001", name: "Your Course Name", credits: 3 },
     // ... add more
 ];
 ```
+
+For normal use, course units can be added, edited, and deleted directly from the course table. Changes apply only to the selected semester and are saved in browser storage.
 
 ### Change Colors
 Modify CSS variables in `index.html` `<style>` section:

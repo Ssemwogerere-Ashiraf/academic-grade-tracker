@@ -93,6 +93,17 @@ System calculates:
   Updated GPA shown at top
 ```
 
+### Manage Course Units
+
+Course units can be managed separately for each semester:
+
+1. Select the semester using the tabs.
+2. Click **"➕ Add Unit"** to enter a course code, unit name, and credit units.
+3. Click **"Edit"** beside a unit to change its details or credits.
+4. Click **"Delete"** beside a unit and confirm the warning to remove it and its marks.
+
+Credit units must be greater than zero. Adding or deleting a unit automatically updates the semester and overall credit totals, and all changes are saved to browser storage.
+
 ---
 
 ## Understanding GPA
