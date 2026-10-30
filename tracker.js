@@ -118,7 +118,7 @@ function computeCGPA() {
     let sumGradePoints = 0;
     let sumCredits = 0;
     
-    for (let sem of semeterKeys) {
+    for (let sem of semesterKeys) {
         const { totalPoints, totalCredits } = computeSemesterGPA(sem);
         sumGradePoints += totalPoints;
         sumCredits += totalCredits;
@@ -160,9 +160,18 @@ function renderCurrentSemester() {
         const gradePoint = (totalScore / 10) * course.credits;
         
         const row = tbody.insertRow();
-        row.insertCell(0).innerHTML = `<span class="course-code">${course.code}</span>`;
-        row.insertCell(1).innerHTML = `<strong>${course.name}</strong>`;
-        row.insertCell(2).innerHTML = `${course.credits}`;
+        const codeCell = row.insertCell(0);
+        const codeSpan = document.createElement("span");
+        codeSpan.className = "course-code";
+        codeSpan.textContent = course.code;
+        codeCell.appendChild(codeSpan);
+
+        const nameCell = row.insertCell(1);
+        const nameStrong = document.createElement("strong");
+        nameStrong.textContent = course.name;
+        nameCell.appendChild(nameStrong);
+
+        row.insertCell(2).textContent = course.credits;
         
         // Coursework input
         const tdCW = row.insertCell(3);
@@ -207,10 +216,84 @@ function renderCurrentSemester() {
         // Total and grade point
         row.insertCell(5).innerHTML = `<span class="total-col">${totalScore.toFixed(1)}</span>`;
         row.insertCell(6).innerHTML = `<span class="grade-point">${gradePoint.toFixed(2)}</span>`;
+
+        const actionsCell = row.insertCell(7);
+        actionsCell.className = "course-actions";
+
+        const editButton = document.createElement("button");
+        editButton.className = "table-action";
+        editButton.type = "button";
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", () => openCourseModal(i));
+        actionsCell.appendChild(editButton);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "table-action delete";
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => deleteCourse(i));
+        actionsCell.appendChild(deleteButton);
     }
     
     document.getElementById("semesterTitle").innerHTML = semesterLabels[currentSem] || currentSem;
     updateGPAandCGPA();
+}
+
+function openCourseModal(courseIndex = null) {
+    const form = document.getElementById("courseForm");
+    form.reset();
+    document.getElementById("courseIndex").value = courseIndex === null ? "" : courseIndex;
+    document.getElementById("courseModalTitle").textContent =
+        courseIndex === null ? "➕ Add Course Unit" : "✏️ Edit Course Unit";
+
+    if (courseIndex !== null) {
+        const course = semestersCourses[currentSem][courseIndex];
+        document.getElementById("courseCode").value = course.code;
+        document.getElementById("courseName").value = course.name;
+        document.getElementById("courseCredits").value = course.credits;
+    }
+
+    openModal("courseModal");
+    document.getElementById("courseCode").focus();
+}
+
+function saveCourse() {
+    const code = document.getElementById("courseCode").value.trim();
+    const name = document.getElementById("courseName").value.trim();
+    const credits = Number(document.getElementById("courseCredits").value);
+    const indexValue = document.getElementById("courseIndex").value;
+
+    if (!code || !name || !Number.isFinite(credits) || credits <= 0) {
+        alert("❌ Enter a course code, course name, and a credit value greater than zero.");
+        return;
+    }
+
+    if (indexValue === "") {
+        semestersCourses[currentSem].push({ code, name, credits });
+        marksData[currentSem].push({ cw: 0, final: 0 });
+    } else {
+        semestersCourses[currentSem][Number(indexValue)] = { code, name, credits };
+    }
+
+    saveToLocalStorage();
+    closeModal("courseModal");
+    renderCurrentSemester();
+    showNotification(indexValue === "" ? "✓ Course unit added successfully!" : "✓ Course unit updated successfully!");
+}
+
+function deleteCourse(courseIndex) {
+    const course = semestersCourses[currentSem][courseIndex];
+    showConfirmDialog(
+        "🗑️ Delete Course Unit?",
+        `Delete "${course.name}" and its marks from ${semesterLabels[currentSem]}?`,
+        () => {
+            semestersCourses[currentSem].splice(courseIndex, 1);
+            marksData[currentSem].splice(courseIndex, 1);
+            saveToLocalStorage();
+            renderCurrentSemester();
+            showNotification("✓ Course unit deleted successfully!");
+        }
+    );
 }
 
 function updateGPAandCGPA() {
@@ -422,6 +505,11 @@ window.addEventListener("load", () => {
     document.getElementById("backupBtn")?.addEventListener("click", backupData);
     document.getElementById("clearAllBtn")?.addEventListener("click", clearAllData);
     document.getElementById("resetSemesterBtn")?.addEventListener("click", resetCurrentSemesterMarks);
+    document.getElementById("addCourseBtn")?.addEventListener("click", () => openCourseModal());
+    document.getElementById("courseForm")?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveCourse();
+    });
 });
 
 // Close modals when clicking outside
